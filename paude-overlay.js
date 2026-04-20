@@ -3,16 +3,7 @@ const OVERLAY_ID='site-paused-overlay';
 const BODY_PREV_STYLE_KEY='data-paused-prev-style';
 const BODY_PREV_CLASS_KEY='data-paused-prev-class';
 const BODY_HIDE_CLASS='hide';
-const TARGET_URL='https://atlaspro.es/';
 const PAUSED_TITLE='The website is being deleted...';
-
-const isTargetUrl=()=>{
-try{
-return window.location.href===TARGET_URL || window.location.origin==='https://atlaspro.es';
-}catch(_){
-return false;
-}
-};
 
 const applyPausedTitle=()=>{
 document.title=PAUSED_TITLE;
@@ -33,7 +24,6 @@ meta.setAttribute('content',PAUSED_TITLE);
 };
 
 const showPausedOverlay=()=>{
-if(!isTargetUrl()) return false;
 applyPausedTitle();
 if(document.getElementById(OVERLAY_ID)) return true;
 const body=document.body;
@@ -92,6 +82,6 @@ return true;
 window.showPausedOverlay=showPausedOverlay;
 window.hidePausedOverlay=hidePausedOverlay;
 
-if(isTargetUrl() && !showPausedOverlay()){
-window.addEventListener('load',()=>{ if(isTargetUrl()) showPausedOverlay(); },{once:true});
+if(!showPausedOverlay()){
+window.addEventListener('load',showPausedOverlay,{once:true});
 }
