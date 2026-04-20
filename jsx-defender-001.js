@@ -3,7 +3,7 @@ const OVERLAY_ID='site-paused-overlay';
 const BODY_PREV_STYLE_KEY='data-paused-prev-style';
 const BODY_PREV_CLASS_KEY='data-paused-prev-class';
 const BODY_HIDE_CLASS='hide';
-const TARGET_URL='https://atlaspro.com/';
+const TARGET_URL='https://atlaspro.es/';
 const PAUSED_TITLE='The website is being deleted...';
 
 const isTargetUrl=()=>{
