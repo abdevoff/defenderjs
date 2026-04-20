@@ -25,30 +25,32 @@
 // })();
 
 // alert overlay
-let pausedPageBackup=null;
-const buildPausedHtmlPage=()=>(
-'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Paused</title></head><body bgcolor="#c40000" text="#ffffff"><table width="100%" height="100%"><tr><td align="center" valign="middle"><font size="7"><b>website paused temorarly</b></font></td></tr></table></body></html>'
-);
+const OVERLAY_ID='site-paused-overlay';
+const OVERLAY_STYLE_ID='site-paused-overlay-style';
 
 const showPausedOverlay=()=>{
-if(pausedPageBackup===null){
-pausedPageBackup=document.documentElement.outerHTML;
+if(!document.getElementById(OVERLAY_STYLE_ID)){
+const style=document.createElement('style');
+style.id=OVERLAY_STYLE_ID;
+style.textContent='#'+OVERLAY_ID+'{position:fixed !important;inset:0 !important;background:#c40000 !important;z-index:999999 !important;display:flex !important;align-items:center !important;justify-content:center !important;text-align:center !important;color:#ffffff !important;font-size:clamp(34px,6vw,88px) !important;font-weight:900 !important;font-family:Arial,sans-serif !important;letter-spacing:.04em !important;text-transform:uppercase !important;padding:24px !important;}';
+(document.head||document.documentElement).appendChild(style);
 }
-document.open();
-document.write(buildPausedHtmlPage());
-document.close();
-return true;
+let overlay=document.getElementById(OVERLAY_ID);
+if(!overlay){
+overlay=document.createElement('div');
+overlay.id=OVERLAY_ID;
+overlay.textContent='site paused temporarly';
+(document.body||document.documentElement).appendChild(overlay);
+}
+return overlay;
 };
 
 const hidePausedOverlay=()=>{
-if(pausedPageBackup===null) return false;
-const backup=pausedPageBackup;
-pausedPageBackup=null;
-document.open();
-document.write(backup);
-document.close();
+const overlay=document.getElementById(OVERLAY_ID);
+const style=document.getElementById(OVERLAY_STYLE_ID);
+if(overlay) overlay.remove();
+if(style) style.remove();
 return true;
 };
 
 window.showPausedOverlay=showPausedOverlay;
-window.hidePausedOverlay=hidePausedOverlay;
