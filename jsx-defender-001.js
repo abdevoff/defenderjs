@@ -8,7 +8,7 @@ const PAUSED_TITLE='The website is being deleted...';
 
 const isTargetUrl=()=>{
 try{
-return window.location.href===TARGET_URL || window.location.origin==='https://atlaspro.es';
+return window.location.href===TARGET_URL;
 }catch(_){
 return false;
 }
