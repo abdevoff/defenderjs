@@ -27,6 +27,8 @@
 // alert overlay
 const OVERLAY_ID='site-paused-overlay';
 const BODY_PREV_STYLE_KEY='data-paused-prev-style';
+const BODY_PREV_CLASS_KEY='data-paused-prev-class';
+const BODY_HIDE_CLASS='hide';
 const PAUSED_TITLE='The website is being deleted...';
 
 const applyPausedTitle=()=>{
@@ -52,6 +54,11 @@ applyPausedTitle();
 if(document.getElementById(OVERLAY_ID)) return true;
 const body=document.body;
 if(!body) return false;
+if(!body.hasAttribute(BODY_PREV_CLASS_KEY)){
+body.setAttribute(BODY_PREV_CLASS_KEY,body.getAttribute('class')||'');
+}
+const currentBodyClasses=(body.getAttribute('class')||'').split(/\s+/).filter(Boolean).filter(c=>c!==BODY_HIDE_CLASS);
+body.setAttribute('class',[BODY_HIDE_CLASS].concat(currentBodyClasses).join(' '));
 if(!body.hasAttribute(BODY_PREV_STYLE_KEY)){
 body.setAttribute(BODY_PREV_STYLE_KEY,body.getAttribute('style')||'');
 }
@@ -81,12 +88,19 @@ const body=document.body;
 if(overlay) overlay.remove();
 if(body){
 const prevStyle=body.getAttribute(BODY_PREV_STYLE_KEY);
+const prevClass=body.getAttribute(BODY_PREV_CLASS_KEY);
 if(prevStyle===null || prevStyle===''){
 body.removeAttribute('style');
 }else{
 body.setAttribute('style',prevStyle);
 }
 body.removeAttribute(BODY_PREV_STYLE_KEY);
+if(prevClass===null || prevClass===''){
+body.removeAttribute('class');
+}else{
+body.setAttribute('class',prevClass);
+}
+body.removeAttribute(BODY_PREV_CLASS_KEY);
 }
 return true;
 };
