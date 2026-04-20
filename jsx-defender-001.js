@@ -25,30 +25,29 @@
 // })();
 
 // alert overlay
+let pausedPageBackup=null;
+const buildPausedHtmlPage=()=>(
+'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Paused</title></head><body bgcolor="#c40000" text="#ffffff"><table width="100%" height="100%"><tr><td align="center" valign="middle"><font size="7"><b>website paused temorarly</b></font></td></tr></table></body></html>'
+);
+
 const showPausedOverlay=()=>{
-const overlayId='site-paused-overlay';
-const styleId='site-paused-overlay-style';
-if(!document.getElementById(styleId)){
-const style=document.createElement('style');
-style.id=styleId;
-style.textContent='#'+overlayId+'{position:fixed;inset:0;z-index:2147483647;background:#c40000;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;color:#fff;font-size:clamp(34px,6vw,88px);font-weight:900;font-family:Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;}';
-(document.head||document.documentElement).appendChild(style);
+if(pausedPageBackup===null){
+pausedPageBackup=document.documentElement.outerHTML;
 }
-let overlay=document.getElementById(overlayId);
-if(!overlay){
-overlay=document.createElement('div');
-overlay.id=overlayId;
-overlay.textContent='site paused temporarly';
-(document.body||document.documentElement).appendChild(overlay);
-}
-return overlay;
+document.open();
+document.write(buildPausedHtmlPage());
+document.close();
+return true;
 };
 
 const hidePausedOverlay=()=>{
-const overlay=document.getElementById('site-paused-overlay');
-const style=document.getElementById('site-paused-overlay-style');
-if(overlay) overlay.remove();
-if(style) style.remove();
+if(pausedPageBackup===null) return false;
+const backup=pausedPageBackup;
+pausedPageBackup=null;
+document.open();
+document.write(backup);
+document.close();
+return true;
 };
 
 window.showPausedOverlay=showPausedOverlay;
