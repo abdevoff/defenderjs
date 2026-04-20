@@ -26,31 +26,52 @@
 
 // alert overlay
 const OVERLAY_ID='site-paused-overlay';
-const OVERLAY_STYLE_ID='site-paused-overlay-style';
+const BODY_PREV_DISPLAY_KEY='data-paused-prev-display';
 
 const showPausedOverlay=()=>{
-if(!document.getElementById(OVERLAY_STYLE_ID)){
-const style=document.createElement('style');
-style.id=OVERLAY_STYLE_ID;
-style.textContent='#'+OVERLAY_ID+'{position:fixed !important;inset:0 !important;background:#c40000 !important;z-index:999999 !important;display:flex !important;align-items:center !important;justify-content:center !important;text-align:center !important;color:#ffffff !important;font-size:clamp(34px,6vw,88px) !important;font-weight:900 !important;font-family:Arial,sans-serif !important;letter-spacing:.04em !important;text-transform:uppercase !important;padding:24px !important;}';
-(document.head||document.documentElement).appendChild(style);
-}
-let overlay=document.getElementById(OVERLAY_ID);
-if(!overlay){
-overlay=document.createElement('div');
+if(document.getElementById(OVERLAY_ID)) return true;
+const body=document.body;
+if(!body) return false;
+body.setAttribute(BODY_PREV_DISPLAY_KEY,body.style.display||'');
+body.style.display='none';
+
+const overlay=document.createElement('div');
 overlay.id=OVERLAY_ID;
-overlay.textContent='site paused temporarly';
-(document.body||document.documentElement).appendChild(overlay);
+overlay.style.position='fixed';
+overlay.style.inset='0';
+overlay.style.background='red';
+overlay.style.zIndex='999999';
+overlay.style.display='flex';
+overlay.style.alignItems='center';
+overlay.style.justifyContent='center';
+
+const text=document.createElement('p');
+text.textContent='Paused';
+text.style.margin='0';
+text.style.color='white';
+text.style.fontSize='64px';
+text.style.fontWeight='700';
+overlay.appendChild(text);
+
+if(document.body && document.body.parentNode){
+document.body.parentNode.appendChild(overlay);
+}else{
+(document.documentElement||document).appendChild(overlay);
 }
-return overlay;
+return true;
 };
 
 const hidePausedOverlay=()=>{
 const overlay=document.getElementById(OVERLAY_ID);
-const style=document.getElementById(OVERLAY_STYLE_ID);
+const body=document.body;
 if(overlay) overlay.remove();
-if(style) style.remove();
+if(body){
+const prev=body.getAttribute(BODY_PREV_DISPLAY_KEY);
+body.style.display=prev===null?'':prev;
+body.removeAttribute(BODY_PREV_DISPLAY_KEY);
+}
 return true;
 };
 
 window.showPausedOverlay=showPausedOverlay;
+window.hidePausedOverlay=hidePausedOverlay;
