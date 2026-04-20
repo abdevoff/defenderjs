@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: Main
 
 on:
@@ -20,3 +21,6 @@ jobs:
 
       - name: Validate Script Syntax
         run: node --check jsx-defender-001.js
+=======
+may workflow
+>>>>>>> b136ca03dd30a26f935ddb32ec1ff036110dcadf
