@@ -1,5 +1,5 @@
 // // alert overlay
-// // elementore footer template
+// // elementore wpcode
 
 
 

@@ -1,5 +1,5 @@
 // // alert overlay
-// // elementore footer template
+// // elementore astra header template
 
 
 
